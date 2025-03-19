@@ -1,106 +1,12 @@
 import streamlit as st
-import google.generativeai as genai
-from youtube_transcript_api import YouTubeTranscriptApi
-import os
-from dotenv import load_dotenv
-from langdetect import detect
+from src.services.youtube_service import YouTubeService
+from src.services.ai_service import AIService
+from src.utils.language_utils import detect_language
+from src.config.settings import GOOGLE_API_KEY, YOUTUBE_API_KEY, TRANSLATION_LANGUAGES
 
-# Load environment variables
-load_dotenv()
-
-# Initialize session state for API key
-if 'api_key' not in st.session_state:
-    st.session_state.api_key = os.getenv('GOOGLE_API_KEY', '')
-
-# Configure Gemini
-if st.session_state.api_key:
-    genai.configure(api_key=st.session_state.api_key)
-    model = genai.GenerativeModel('gemini-1.5-flash')
-
-def get_video_id(url):
-    """Extract video ID from YouTube URL"""
-    if 'youtu.be' in url:
-        return url.split('/')[-1].split('?')[0]
-    elif 'youtube.com' in url:
-        if 'v=' in url:
-            return url.split('v=')[1].split('&')[0]
-        elif 'embed/' in url:
-            return url.split('embed/')[-1].split('?')[0]
-    return None
-
-def get_transcript(video_id):
-    """Get transcript from YouTube video"""
-    try:
-        transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
-        transcript = transcript_list.find_transcript(['en', 'es', 'fr', 'de'])
-        return ' '.join([entry['text'] for entry in transcript.fetch()])
-    except Exception as e:
-        return f"Error getting transcript: {str(e)}"
-
-def generate_summary(text, word_count):
-    """Generate summary using Gemini"""
-    prompt = f"""Please analyze the following text and create a comprehensive summary in approximately {word_count} words. Structure your response as follows:
-
-1. Title: Create a concise, engaging title that captures the main topic
-2. Brief Introduction: 2-3 sentences introducing the main topic and context
-3. Target Audience: Identify who this content is primarily aimed at (e.g., beginners, professionals, students, etc.)
-4. Key Points: Present the main points in bullet format, focusing on the most important information
-5. Conclusion: A brief conclusion that ties everything together and provides value to the target audience
-
-Text to analyze:
-{text}
-
-Please format your response as follows:
-
-# [Title]
-
-## Introduction
-[Your introduction here]
-
-## Target Audience
-[Your target audience analysis here]
-
-## Key Points
-- [Point 1]
-- [Point 2]
-- [Point 3]
-...
-
-## Conclusion
-[Your conclusion here]"""
-    
-    response = model.generate_content(prompt)
-    return response.text
-
-def translate_text(text, target_language):
-    """Translate text using Gemini"""
-    prompt = f"""Translate the following text to {target_language}:
-
-{text}
-
-Translation:"""
-    
-    response = model.generate_content(prompt)
-    return response.text
-
-def detect_language(text):
-    """Detect the language of the text"""
-    try:
-        lang_code = detect(text)
-        lang_names = {
-            'en': 'English',
-            'es': 'Spanish',
-            'fr': 'French',
-            'de': 'German',
-            'it': 'Italian',
-            'pt': 'Portuguese',
-            'zh': 'Chinese',
-            'ja': 'Japanese',
-            'ko': 'Korean'
-        }
-        return lang_names.get(lang_code, 'Unknown')
-    except:
-        return 'Unknown'
+# Initialize services
+youtube_service = YouTubeService()
+ai_service = AIService()
 
 # Set page config for better layout
 st.set_page_config(layout="wide")
@@ -117,14 +23,17 @@ if 'transcript' not in st.session_state:
 with st.sidebar:
     st.title("YouTube Summarizer")
     
-    # API Key input
-    with st.expander("API Key Settings", expanded=not bool(st.session_state.api_key)):
-        api_key = st.text_input("Google Gemini API Key", type="password", value=st.session_state.api_key)
+    # API Key inputs
+    with st.expander("API Key Settings", expanded=not bool(GOOGLE_API_KEY)):
+        api_key = st.text_input("Google Gemini API Key", type="password", value=GOOGLE_API_KEY)
         if api_key:
-            st.session_state.api_key = api_key
-            genai.configure(api_key=api_key)
-            model = genai.GenerativeModel('gemini-1.5-flash')
-            st.success("API Key configured successfully!")
+            ai_service = AIService()
+            st.success("Gemini API Key configured successfully!")
+            
+        youtube_api_key = st.text_input("YouTube Data API Key", type="password", value=YOUTUBE_API_KEY)
+        if youtube_api_key:
+            youtube_service = YouTubeService()
+            st.success("YouTube API Key configured successfully!")
     
     st.write("Enter video details to get started!")
     
@@ -140,13 +49,15 @@ with st.sidebar:
     if enable_translation:
         target_language = st.selectbox(
             "Translate to",
-            ["Spanish", "French", "German", "Italian", "Portuguese", "Chinese", "Japanese", "Korean"],
+            TRANSLATION_LANGUAGES,
             index=0
         )
     
     if st.button("Process Video", use_container_width=True):
-        if not st.session_state.api_key:
+        if not GOOGLE_API_KEY:
             st.error("Please configure your Google Gemini API Key first!")
+        elif not YOUTUBE_API_KEY:
+            st.error("Please configure your YouTube Data API Key first!")
         else:
             st.session_state.process_video = True
 
@@ -156,15 +67,29 @@ st.title("YouTube Video Summary")
 # Process video if button was clicked
 if st.session_state.process_video:
     if youtube_url:
-        video_id = get_video_id(youtube_url)
+        video_id = youtube_service.get_video_id(youtube_url)
         if video_id:
+            # Get video details and display them
+            video_details = youtube_service.get_video_details(video_id)
+            if video_details:
+                col1, col2 = st.columns([1, 2])
+                with col1:
+                    st.image(video_details['thumbnail'], use_column_width=True)
+                with col2:
+                    st.subheader(video_details['title'])
+                    st.write(f"**Channel:** {video_details['channel_name']}")
+                    st.write(f"**Subscribers:** {video_details['channel_subscribers']:,}")
+                    st.write(f"**Views:** {video_details['video_views']:,}")
+                    st.write(f"**Likes:** {video_details['video_likes']:,}")
+                    st.write(f"**Published:** {video_details['published_date'].split('T')[0]}")
+            
             # Create tabs for different views
-            tab1, tab2 = st.tabs(["Summary", "Full Transcript"])
+            tab1, tab2, tab3 = st.tabs(["Summary", "Full Transcript", "Comments Analysis"])
             
             with tab1:
                 with st.spinner("Generating summary..."):
                     # Get transcript
-                    transcript = get_transcript(video_id)
+                    transcript = youtube_service.get_transcript(video_id)
                     
                     if "Error" not in transcript:
                         # Store transcript in session state and detect language
@@ -172,12 +97,12 @@ if st.session_state.process_video:
                         st.session_state.detected_language = detect_language(transcript)
                         
                         # Generate summary
-                        summary = generate_summary(transcript, word_count)
+                        summary = ai_service.generate_summary(transcript, word_count)
                         
                         # Show translated content first if enabled
                         if enable_translation:
                             st.subheader(f"Translation to {target_language}")
-                            translation = translate_text(summary, target_language)
+                            translation = ai_service.translate_text(summary, target_language)
                             st.markdown(translation)
                             st.divider()
                             st.subheader(f"Original ({st.session_state.detected_language})")
@@ -196,7 +121,7 @@ if st.session_state.process_video:
                     st.subheader("Full Transcript")
                     if enable_translation and target_language != st.session_state.detected_language:
                         with st.spinner("Translating transcript..."):
-                            translated_transcript = translate_text(st.session_state.transcript, target_language)
+                            translated_transcript = ai_service.translate_text(st.session_state.transcript, target_language)
                             st.subheader(f"Translation to {target_language}")
                             st.write(translated_transcript)
                             st.divider()
@@ -204,6 +129,23 @@ if st.session_state.process_video:
                             st.write(st.session_state.transcript)
                     else:
                         st.write(st.session_state.transcript)
+            
+            with tab3:
+                with st.spinner("Analyzing comments..."):
+                    comments = youtube_service.get_video_comments(video_id)
+                    if comments:
+                        sentiment_analysis = ai_service.analyze_sentiment(comments)
+                        if sentiment_analysis:
+                            st.subheader("Comment Analysis")
+                            st.write(f"**Overall Sentiment:** {sentiment_analysis['category']}")
+                            st.write(f"**Total Comments Analyzed:** {sentiment_analysis['total_comments']}")
+                            
+                            # Generate comprehensive comment analysis
+                            comment_analysis = ai_service.analyze_comments(comments)
+                            if comment_analysis:
+                                st.markdown(comment_analysis)
+                    else:
+                        st.warning("No comments available for analysis.")
         else:
             st.error("Invalid YouTube URL. Please make sure you're using a valid YouTube URL.")
     else:
@@ -213,12 +155,13 @@ if st.session_state.process_video:
 with st.sidebar.expander("How to use"):
     st.write("""
     1. Configure your Google Gemini API Key (if not using .env file)
-    2. Paste a YouTube video URL
-    3. Select the desired summary length
-    4. (Optional) Enable translation and select target language
-    5. Click 'Process Video'
-    6. View the summary and translation (if enabled)
-    7. Switch to 'Full Transcript' tab to see the complete text
+    2. Configure your YouTube Data API Key (if not using .env file)
+    3. Paste a YouTube video URL
+    4. Select the desired summary length
+    5. (Optional) Enable translation and select target language
+    6. Click 'Process Video'
+    7. View the summary, translation (if enabled), and comments analysis
+    8. Switch between tabs to see different views
     
     Note: The video must have closed captions available.
     """) 

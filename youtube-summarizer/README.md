@@ -1,90 +1,144 @@
-# YouTube Transcript Summarizer & Translator
+# YouTube Video Summarizer
 
-A powerful application that allows you to:
-1. Extract transcripts from YouTube videos
-2. Generate concise summaries with customizable length
-3. Translate content into multiple languages
-4. View full transcripts with automatic language detection
+A powerful Streamlit application that provides comprehensive analysis of YouTube videos, including summaries, translations, and comment analysis.
 
 ## Features
-- Automatic language detection
-- User-defined summary length (50-500 words)
-- Support for multiple target languages
-- Clean and intuitive Streamlit interface
-- Powered by Google's Gemini AI model
-- Tab-based interface for easy navigation between summary and full transcript
-- Flexible API key configuration (via .env file or UI)
+
+- **Video Summary Generation**
+  - Creates concise, structured summaries of video content
+  - Customizable summary length (50-500 words)
+  - Identifies target audience and key takeaways
+  - Supports multiple languages including Indian languages
+
+- **Multi-Language Support**
+  - Automatic language detection
+  - Support for multiple languages including:
+    - Indian Languages: Hindi, Telugu, Tamil, Kannada, Malayalam, Bengali, Gujarati, Marathi, Punjabi, Urdu
+    - International Languages: English, Spanish, French, German
+  - Handles both manual and auto-generated captions
+
+- **Translation Capabilities**
+  - Translate summaries and full transcripts
+  - Supports multiple target languages:
+    - Indian Languages: Hindi, Telugu, Tamil, Malayalam, Kannada, Bengali, Gujarati, Marathi, Punjabi, Urdu
+    - International Languages: Spanish, French, German, Italian, Portuguese, Chinese, Japanese, Korean
+
+- **Video Information Display**
+  - Video thumbnail preview
+  - Channel details (name, subscribers)
+  - Video statistics (views, likes)
+  - Publication date
+
+- **Comment Analysis**
+  - Analyzes up to 100 video comments
+  - Provides comprehensive feedback analysis:
+    - Overall sentiment
+    - What users liked
+    - Key learnings and helpful aspects
+    - Areas for improvement
+    - Common themes in comments
 
 ## Prerequisites
+
 - Python 3.7 or higher
-- Google API key for Gemini AI
+- Google Gemini API key
+- YouTube Data API key
+- Internet connection
 
-## Setup
+## Installation
 
-1. Clone this repository:
+1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/yourusername/youtube-summarizer.git
 cd youtube-summarizer
 ```
 
-2. Create and activate a virtual environment (recommended):
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows, use: venv\Scripts\activate
-```
-
-3. Install the required packages:
+2. Install required packages:
 ```bash
 pip install -r requirements.txt
 ```
 
-4. Configure your Google Gemini API Key (choose one method):
-
-   a. Using .env file (recommended for development):
-   ```
-   Create a .env file in the project root and add:
-   GOOGLE_API_KEY=your_api_key_here
-   ```
-
-   b. Using the application UI:
-   - Run the application
-   - Click on "API Key Settings" in the sidebar
-   - Enter your API key in the secure input field
+3. Set up environment variables:
+   Create a `.env` file in the project root with:
+```
+GOOGLE_API_KEY=your_gemini_api_key_here
+YOUTUBE_API_KEY=your_youtube_api_key_here
+```
 
 ## Usage
 
-1. Run the Streamlit application:
+1. Start the application:
 ```bash
 streamlit run main.py
 ```
 
-2. Open your web browser and navigate to the URL shown in the terminal (typically http://localhost:8501)
+2. Configure API Keys:
+   - Enter your Google Gemini API key
+   - Enter your YouTube Data API key
+   - Or use the `.env` file method
 
-3. In the application:
-   - Configure your API key if not using .env file
-   - Enter a YouTube URL in the sidebar
-   - Select your desired summary length
+3. Process a video:
+   - Paste a YouTube video URL
+   - Select desired summary length
+   - (Optional) Enable translation and select target language
    - Click "Process Video"
-   - View the summary and translation in the main area
-   - Switch to the "Full Transcript" tab to see the complete text
-   - Use the language selector in the top right to change the translation language
 
-## Notes
-- The application works best with videos that have closed captions available
-- Processing time may vary depending on video length and complexity
-- Make sure you have a stable internet connection
-- The application automatically detects the language of the transcript
-- You can translate both the summary and full transcript
-- Your API key is stored securely in the session and is not saved permanently when using the UI method
+4. View results:
+   - Summary tab: Get a structured summary of the video
+   - Full Transcript tab: View the complete transcript
+   - Comments Analysis tab: See user feedback analysis
+
+## API Key Setup
+
+### Google Gemini API
+1. Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
+2. Create a new API key
+3. Copy the key to your `.env` file or enter it in the app
+
+### YouTube Data API
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select existing one
+3. Enable YouTube Data API v3
+4. Create credentials (API key)
+5. Copy the key to your `.env` file or enter it in the app
 
 ## Troubleshooting
-If you encounter any issues:
-1. Make sure the video has closed captions available
-2. Check if the video is private or age-restricted
-3. Verify your Google API key is valid and has sufficient quota
-4. Ensure you have a stable internet connection
-5. Try a different video if the current one doesn't work
-6. If using the UI method, make sure to enter your API key before processing videos
+
+### Common Issues
+
+1. **No Transcripts Found**
+   - Ensure the video has closed captions available
+   - Try a different video
+   - Check if the video is private or age-restricted
+
+2. **API Key Errors**
+   - Verify API keys are correctly entered
+   - Check if API quotas are exceeded
+   - Ensure proper API access is enabled
+
+3. **Translation Issues**
+   - Check if the source language is supported
+   - Verify the target language is available
+   - Ensure sufficient API quota for translation
+
+### Tips for Best Results
+
+1. Use videos with clear audio and available captions
+2. For longer videos, consider using shorter summary lengths
+3. Enable translation for non-English content
+4. Check comment analysis for user feedback insights
 
 ## Contributing
-Feel free to submit issues and enhancement requests! 
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- [Streamlit](https://streamlit.io/) for the web interface
+- [Google Gemini](https://makersuite.google.com/) for AI capabilities
+- [YouTube Data API](https://developers.google.com/youtube/v3) for video data
+- [YouTube Transcript API](https://github.com/jdepoix/youtube-transcript-api) for transcript handling 
