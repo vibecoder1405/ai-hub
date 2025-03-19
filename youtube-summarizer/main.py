@@ -132,6 +132,18 @@ with st.sidebar:
     youtube_url = st.text_input("YouTube URL")
     word_count = st.number_input("Summary Length (words)", min_value=50, max_value=500, value=100)
     
+    # Translation options in sidebar
+    st.divider()
+    st.subheader("Translation Options")
+    enable_translation = st.checkbox("Enable Translation", value=False)
+    
+    if enable_translation:
+        target_language = st.selectbox(
+            "Translate to",
+            ["Spanish", "French", "German", "Italian", "Portuguese", "Chinese", "Japanese", "Korean"],
+            index=0
+        )
+    
     if st.button("Process Video", use_container_width=True):
         if not st.session_state.api_key:
             st.error("Please configure your Google Gemini API Key first!")
@@ -140,31 +152,6 @@ with st.sidebar:
 
 # Main content area
 st.title("YouTube Video Summary")
-
-# Language selection for translation (top right)
-col1, col2, col3 = st.columns([2, 1, 1])
-with col3:
-    if st.session_state.transcript:
-        st.session_state.detected_language = detect_language(st.session_state.transcript)
-        st.write(f"Detected Language: {st.session_state.detected_language}")
-    
-    target_language = st.selectbox(
-        "Translate to",
-        ["Spanish", "French", "German", "Italian", "Portuguese", "Chinese", "Japanese", "Korean"],
-        index=0
-    )
-
-# Language code mapping
-LANG_CODES = {
-    "Spanish": "es",
-    "French": "fr",
-    "German": "de",
-    "Italian": "it",
-    "Portuguese": "pt",
-    "Chinese": "zh",
-    "Japanese": "ja",
-    "Korean": "ko"
-}
 
 # Process video if button was clicked
 if st.session_state.process_video:
@@ -180,17 +167,23 @@ if st.session_state.process_video:
                     transcript = get_transcript(video_id)
                     
                     if "Error" not in transcript:
-                        # Store transcript in session state
+                        # Store transcript in session state and detect language
                         st.session_state.transcript = transcript
+                        st.session_state.detected_language = detect_language(transcript)
                         
                         # Generate summary
                         summary = generate_summary(transcript, word_count)
-                        st.markdown(summary)
                         
-                        # Translation
-                        st.subheader(f"Translation to {target_language}")
-                        translation = translate_text(summary, target_language)
-                        st.markdown(translation)
+                        # Show translated content first if enabled
+                        if enable_translation:
+                            st.subheader(f"Translation to {target_language}")
+                            translation = translate_text(summary, target_language)
+                            st.markdown(translation)
+                            st.divider()
+                            st.subheader(f"Original ({st.session_state.detected_language})")
+                            st.markdown(summary)
+                        else:
+                            st.markdown(summary)
                     else:
                         st.error(transcript)
                         st.info("Tips if you're seeing an error:\n"
@@ -201,10 +194,14 @@ if st.session_state.process_video:
             with tab2:
                 if st.session_state.transcript:
                     st.subheader("Full Transcript")
-                    if target_language != st.session_state.detected_language:
+                    if enable_translation and target_language != st.session_state.detected_language:
                         with st.spinner("Translating transcript..."):
                             translated_transcript = translate_text(st.session_state.transcript, target_language)
+                            st.subheader(f"Translation to {target_language}")
                             st.write(translated_transcript)
+                            st.divider()
+                            st.subheader(f"Original ({st.session_state.detected_language})")
+                            st.write(st.session_state.transcript)
                     else:
                         st.write(st.session_state.transcript)
         else:
@@ -218,9 +215,10 @@ with st.sidebar.expander("How to use"):
     1. Configure your Google Gemini API Key (if not using .env file)
     2. Paste a YouTube video URL
     3. Select the desired summary length
-    4. Click 'Process Video'
-    5. View the summary and translation
-    6. Switch to 'Full Transcript' tab to see the complete text
+    4. (Optional) Enable translation and select target language
+    5. Click 'Process Video'
+    6. View the summary and translation (if enabled)
+    7. Switch to 'Full Transcript' tab to see the complete text
     
     Note: The video must have closed captions available.
     """) 
