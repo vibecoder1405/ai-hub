@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 
-# Load environment variables
+# Load environment variables from .env file
 load_dotenv()
 
 # API Keys
@@ -10,6 +10,33 @@ YOUTUBE_API_KEY = os.getenv('YOUTUBE_API_KEY', '')
 
 # Model Configuration
 GEMINI_MODEL = 'gemini-2.0-flash'
+
+# Translation Languages
+TRANSLATION_LANGUAGES = [
+    'English',
+    'Spanish',
+    'French',
+    'German',
+    'Italian',
+    'Portuguese',
+    'Russian',
+    'Chinese',
+    'Japanese',
+    'Korean',
+    'Hindi',
+    'Bengali',
+    'Tamil',
+    'Telugu',
+    'Kannada',
+    'Malayalam',
+    'Gujarati',
+    'Marathi',
+    'Punjabi',
+    'Urdu'
+]
+
+# File size limits
+MAX_PDF_SIZE = 10 * 1024 * 1024  # 10MB in bytes
 
 # Language Configuration
 PREFERRED_LANGUAGES = [
@@ -49,28 +76,4 @@ LANGUAGE_NAMES = {
     'mr': 'Marathi',
     'pa': 'Punjabi',
     'ur': 'Urdu'
-}
-
-# Translation Options
-TRANSLATION_LANGUAGES = [
-    # Indian Languages
-    "Hindi",
-    "Telugu",
-    "Tamil",
-    "Malayalam",
-    "Kannada",
-    "Bengali",
-    "Gujarati",
-    "Marathi",
-    "Punjabi",
-    "Urdu",
-    # International Languages
-    "Spanish",
-    "French",
-    "German",
-    "Italian",
-    "Portuguese",
-    "Chinese",
-    "Japanese",
-    "Korean"
-] 
+} 

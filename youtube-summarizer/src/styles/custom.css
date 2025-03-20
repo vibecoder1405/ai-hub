@@ -1,0 +1,547 @@
+/* Custom CSS for Content Summarizer */
+
+/* Main container styling */
+.main {
+    background-color: #f8f9fa;
+    padding: 0.5rem;
+}
+
+/* Header styling */
+.main-header {
+    margin-top: 0;
+    padding-top: 0;
+    margin: 1rem auto;
+    max-width: 800px;
+    padding: 0.5rem;
+    text-align: center;
+}
+
+.main-header h1 {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+    color: #1a1a1a;
+}
+
+.main-header .subtitle {
+    font-size: 1.1rem;
+    color: #666;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+}
+
+/* Trending section styling */
+.trending-section {
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.trending-section h2 {
+    margin-bottom: 0.5rem;
+    color: #1a1a1a;
+    font-size: 1.5rem;
+}
+
+.trending-video {
+    position: relative;
+    background: white;
+    padding: 0.75rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin-bottom: 0.75rem;
+    transition: transform 0.2s;
+    height: 100%;
+}
+
+.trending-video img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+}
+
+.trending-video h4 {
+    font-size: 0.95rem;
+    line-height: 1.3;
+    margin: 0.3rem 0;
+    color: #1a1a1a;
+}
+
+.trending-video p {
+    font-size: 0.85rem;
+    margin: 0.2rem 0;
+    color: #666;
+}
+
+.video-category {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    z-index: 1;
+}
+
+/* Analysis section styling */
+.analysis-section {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.analysis-section h3 {
+    color: #1f2937;
+    margin-bottom: 0.3rem;
+    font-size: 1.2rem;
+}
+
+.analysis-section p {
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Tab styling */
+.stTabs {
+    background: white;
+    padding: 0.5rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.stTabs [data-baseweb="tab-list"] {
+    gap: 1rem;
+    background: #f8f9fa;
+    padding: 0.5rem;
+    border-radius: 6px;
+}
+
+.stTabs [data-baseweb="tab"] {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+}
+
+/* Video details styling */
+.video-details {
+    padding: 0.75rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.video-details h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.video-details p {
+    font-size: 0.9rem;
+    margin: 0.3rem 0;
+}
+
+/* Chat interface styling */
+.stChatMessage {
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    border-radius: 8px;
+}
+
+.stChatMessage[data-testid="user"] {
+    margin-left: 1rem;
+}
+
+.stChatMessage[data-testid="assistant"] {
+    margin-right: 1rem;
+}
+
+/* Transcript styling */
+.transcript-container {
+    padding: 1rem;
+    margin-top: 0.5rem;
+    position: relative;
+}
+
+.transcript-content {
+    max-height: 400px;
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
+}
+
+.transcript-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.transcript-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.transcript-content::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+.transcript-content::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Button styling */
+.stButton > button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+}
+
+/* Input field styling */
+.stTextInput > div > div > input {
+    padding: 0.5rem 0.75rem;
+}
+
+/* Loading spinner styling */
+.stSpinner {
+    padding: 1rem;
+}
+
+.stSpinner > div {
+    width: 35px;
+    height: 35px;
+    margin: 10px auto;
+}
+
+/* Translation section styling */
+.translation-section {
+    padding: 0.75rem;
+    margin-top: 0.5rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.translation-section h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Sidebar styling */
+.css-1d391kg {
+    padding-top: 1rem;
+}
+
+.sidebar-header {
+    margin-bottom: 1rem;
+}
+
+.sidebar-header h2 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Copy button styling */
+.copy-button {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+}
+
+/* Responsive design adjustments */
+@media (max-width: 768px) {
+    .main-header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .main-header .subtitle {
+        font-size: 1rem;
+    }
+    
+    .trending-video img {
+        height: 140px;
+    }
+}
+
+/* Error and success messages */
+.stSuccess, .stError, .stInfo {
+    padding: 0.75rem;
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+}
+
+/* Main container styling */
+.main {
+    background-color: #f8f9fa;
+}
+
+/* Header styling */
+.stTitle {
+    color: #1f2937;
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: linear-gradient(135deg, #1f2937 0%, #4b5563 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Subheader styling */
+.stSubheader {
+    color: #374151;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+/* Input field styling */
+.stTextInput > div > div > input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+/* Button styling */
+.stButton > button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Number input styling */
+.stNumberInput > div > div > input {
+    border-radius: 8px;
+    border: 2px solid #e5e7eb;
+    padding: 0.75rem 1rem;
+}
+
+/* Checkbox styling */
+.stCheckbox > label {
+    color: #374151;
+    font-weight: 500;
+}
+
+/* Selectbox styling */
+.stSelectbox > div > div > select {
+    border-radius: 8px;
+    border: 2px solid #e5e7eb;
+    padding: 0.75rem 1rem;
+}
+
+/* Tab styling */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 2rem;
+}
+
+.stTabs [data-baseweb="tab"] {
+    color: #6b7280;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.stTabs [data-baseweb="tab"][aria-selected="true"] {
+    color: #3b82f6;
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+/* Sidebar styling */
+.sidebar .sidebar-content {
+    background-color: #ffffff;
+}
+
+/* Success message styling */
+.stSuccess {
+    background-color: #ecfdf5;
+    border-radius: 8px;
+    padding: 1rem;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+}
+
+/* Error message styling */
+.stError {
+    background-color: #fef2f2;
+    border-radius: 8px;
+    padding: 1rem;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}
+
+/* Info message styling */
+.stInfo {
+    background-color: #eff6ff;
+    border-radius: 8px;
+    padding: 1rem;
+    color: #1e40af;
+    border: 1px solid #dbeafe;
+}
+
+/* Divider styling */
+.stDivider {
+    margin: 2rem 0;
+    border-top: 2px solid #e5e7eb;
+}
+
+/* Image container styling */
+.stImage {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Markdown content styling */
+.stMarkdown {
+    line-height: 1.6;
+    color: #374151;
+}
+
+.stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
+    color: #1f2937;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .stTitle {
+        font-size: 2rem;
+    }
+    
+    .stSubheader {
+        font-size: 1.25rem;
+    }
+    
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 1rem;
+    }
+}
+
+/* Chat interface styling */
+.stChatInput {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.stChatInputContainer {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.stChatInputContainer input {
+    flex: 1;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.stChatInputContainer input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+    outline: none;
+}
+
+.stChatInputContainer button {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.stChatInputContainer button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Chat message avatar styling */
+.stChatMessageAvatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: white;
+}
+
+.stChatMessageAvatar[data-testid="user"] {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+}
+
+.stChatMessageAvatar[data-testid="assistant"] {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+/* Loading animation for chat */
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Trending Videos Section */
+.trending-video button {
+    margin-top: 1rem;
+    width: 100%;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.trending-video button:hover {
+    background-color: #0056b3;
+}
+
+/* Summary and Analysis Copy Buttons */
+.summary-content, .comment-analysis {
+    position: relative;
+}
+
+.summary-content::after, .comment-analysis::after {
+    content: "📋";
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.summary-content:hover::after, .comment-analysis:hover::after {
+    opacity: 1;
+}
+
+.text-center {
+    text-align: center;
+}
+
+/* Reduce top spacing */
+.main .block-container {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+/* Remove default Streamlit padding */
+.stApp {
+    margin-top: 0;
+} 

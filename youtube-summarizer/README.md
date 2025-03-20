@@ -1,51 +1,26 @@
-# YouTube Video Summarizer
+# 🤖 AI YouTube Content Analyzer
 
-A powerful Streamlit application that provides comprehensive analysis of YouTube videos, including summaries, translations, and comment analysis.
+An AI-powered application that helps you analyze YouTube videos by providing transcripts, summaries, interactive chat, and comment analysis.
 
-## Features
+## ✨ Features
 
-- **Video Summary Generation**
-  - Creates concise, structured summaries of video content
-  - Customizable summary length (50-500 words)
-  - Identifies target audience and key takeaways
-  - Supports multiple languages including Indian languages
+- 🎥 **Trending Videos**: Discover and analyze popular YouTube videos
+- 📝 **Video Summaries**: Get AI-generated summaries of video content
+- 💬 **Chat with Video**: Ask questions about the video content and get contextual answers
+- 📊 **Comments Analysis**: Analyze sentiment and themes in video comments
+- 📄 **Full Transcript**: Access and copy the complete video transcript
+- 🌍 **Translation Support**: Translate summaries and analysis to multiple languages
+- 📋 **Copy Functionality**: Easy copying of summaries, transcripts, and analysis
 
-- **Multi-Language Support**
-  - Automatic language detection
-  - Support for multiple languages including:
-    - Indian Languages: Hindi, Telugu, Tamil, Kannada, Malayalam, Bengali, Gujarati, Marathi, Punjabi, Urdu
-    - International Languages: English, Spanish, French, German
-  - Handles both manual and auto-generated captions
+## 🚀 Getting Started
 
-- **Translation Capabilities**
-  - Translate summaries and full transcripts
-  - Supports multiple target languages:
-    - Indian Languages: Hindi, Telugu, Tamil, Malayalam, Kannada, Bengali, Gujarati, Marathi, Punjabi, Urdu
-    - International Languages: Spanish, French, German, Italian, Portuguese, Chinese, Japanese, Korean
+### Prerequisites
 
-- **Video Information Display**
-  - Video thumbnail preview
-  - Channel details (name, subscribers)
-  - Video statistics (views, likes)
-  - Publication date
+- Python 3.12 or higher
+- Google Gemini API Key
+- YouTube Data API Key
 
-- **Comment Analysis**
-  - Analyzes up to 100 video comments
-  - Provides comprehensive feedback analysis:
-    - Overall sentiment
-    - What users liked
-    - Key learnings and helpful aspects
-    - Areas for improvement
-    - Common themes in comments
-
-## Prerequisites
-
-- Python 3.7 or higher
-- Google Gemini API key
-- YouTube Data API key
-- Internet connection
-
-## Installation
+### Installation
 
 1. Clone the repository:
 ```bash
@@ -53,92 +28,57 @@ git clone https://github.com/yourusername/youtube-summarizer.git
 cd youtube-summarizer
 ```
 
-2. Install required packages:
+2. Create a virtual environment and activate it:
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+3. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Set up environment variables:
-   Create a `.env` file in the project root with:
-```
-GOOGLE_API_KEY=your_gemini_api_key_here
-YOUTUBE_API_KEY=your_youtube_api_key_here
+4. Create a `.env` file in the root directory with your API keys:
+```env
+GOOGLE_API_KEY=your_gemini_api_key
+YOUTUBE_API_KEY=your_youtube_api_key
 ```
 
-## Usage
+### Running the Application
 
-1. Start the application:
 ```bash
 streamlit run main.py
 ```
 
-2. Configure API Keys:
-   - Enter your Google Gemini API key
-   - Enter your YouTube Data API key
-   - Or use the `.env` file method
+## 🔧 Configuration
 
-3. Process a video:
-   - Paste a YouTube video URL
-   - Select desired summary length
-   - (Optional) Enable translation and select target language
-   - Click "Process Video"
+The application can be configured through the following settings in `src/config/settings.py`:
+- Translation languages
+- Model settings
+- API configurations
 
-4. View results:
-   - Summary tab: Get a structured summary of the video
-   - Full Transcript tab: View the complete transcript
-   - Comments Analysis tab: See user feedback analysis
+## 🎯 Usage
 
-## API Key Setup
+1. Enter a YouTube URL or select from trending videos
+2. Choose from available analysis options:
+   - Generate Summary
+   - Chat with Video
+   - Analyze Comments
+   - View Full Transcript
+3. Use translation features if needed
+4. Copy and share results
 
-### Google Gemini API
-1. Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
-2. Create a new API key
-3. Copy the key to your `.env` file or enter it in the app
-
-### YouTube Data API
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a new project or select existing one
-3. Enable YouTube Data API v3
-4. Create credentials (API key)
-5. Copy the key to your `.env` file or enter it in the app
-
-## Troubleshooting
-
-### Common Issues
-
-1. **No Transcripts Found**
-   - Ensure the video has closed captions available
-   - Try a different video
-   - Check if the video is private or age-restricted
-
-2. **API Key Errors**
-   - Verify API keys are correctly entered
-   - Check if API quotas are exceeded
-   - Ensure proper API access is enabled
-
-3. **Translation Issues**
-   - Check if the source language is supported
-   - Verify the target language is available
-   - Ensure sufficient API quota for translation
-
-### Tips for Best Results
-
-1. Use videos with clear audio and available captions
-2. For longer videos, consider using shorter summary lengths
-3. Enable translation for non-English content
-4. Check comment analysis for user feedback insights
-
-## Contributing
+## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## License
+## 📝 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Acknowledgments
+## 🙏 Acknowledgments
 
-- [Streamlit](https://streamlit.io/) for the web interface
-- [Google Gemini](https://makersuite.google.com/) for AI capabilities
-- [YouTube Data API](https://developers.google.com/youtube/v3) for video data
-- [YouTube Transcript API](https://github.com/jdepoix/youtube-transcript-api) for transcript handling 
+- Streamlit for the amazing web framework
+- Google Gemini for AI capabilities
+- YouTube Data API for video data access 

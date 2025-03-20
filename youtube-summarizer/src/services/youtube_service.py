@@ -1,6 +1,7 @@
 from youtube_transcript_api import YouTubeTranscriptApi
 from googleapiclient.discovery import build
 from src.config.settings import YOUTUBE_API_KEY, PREFERRED_LANGUAGES
+from datetime import datetime, timedelta
 
 class YouTubeService:
     def __init__(self):
@@ -106,4 +107,56 @@ class YouTubeService:
                         return "Error: No transcripts found for this video. Please try a different video."
                         
         except Exception as e:
-            return f"Error getting transcript: {str(e)}" 
+            return f"Error getting transcript: {str(e)}"
+
+    def get_trending_videos(self, category_id=None, max_results=5):
+        """Get trending videos from YouTube.
+        
+        Args:
+            category_id (str, optional): YouTube video category ID. Defaults to None.
+            max_results (int, optional): Maximum number of results to return. Defaults to 5.
+        """
+        try:
+            request_params = {
+                "part": "snippet,statistics",
+                "chart": "mostPopular",
+                "regionCode": "US",
+                "maxResults": max_results
+            }
+            
+            if category_id:
+                request_params["videoCategoryId"] = category_id
+            
+            request = self.youtube.videos().list(**request_params)
+            response = request.execute()
+            trending_videos = []
+            
+            for item in response['items']:
+                video_id = item['id']
+                snippet = item['snippet']
+                statistics = item['statistics']
+                
+                # Get channel details
+                channel_id = snippet['channelId']
+                channel_request = self.youtube.channels().list(
+                    part="statistics",
+                    id=channel_id
+                )
+                channel_response = channel_request.execute()
+                channel_stats = channel_response['items'][0]['statistics']
+                
+                trending_videos.append({
+                    'video_id': video_id,
+                    'title': snippet['title'],
+                    'thumbnail': snippet['thumbnails']['high']['url'],
+                    'channel_name': snippet['channelTitle'],
+                    'channel_subscribers': int(channel_stats.get('subscriberCount', 0)),
+                    'video_views': int(statistics.get('viewCount', 0)),
+                    'video_likes': int(statistics.get('likeCount', 0)),
+                    'published_date': snippet['publishedAt']
+                })
+            
+            return trending_videos
+        except Exception as e:
+            print(f"Error fetching trending videos: {str(e)}")
+            return [] 
