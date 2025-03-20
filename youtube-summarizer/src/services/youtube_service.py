@@ -54,18 +54,18 @@ class YouTubeService:
             raise Exception(f"Error fetching video details: {str(e)}")
 
     def get_video_comments(self, video_id):
-        """Get video comments using YouTube Data API"""
+        """Get comments from YouTube video"""
         try:
-            comments = []
             request = self.youtube.commentThreads().list(
-                part='snippet',
+                part="snippet",
                 videoId=video_id,
                 maxResults=100
             )
             
+            comments = []
+            response = request.execute()
+            
             while request and len(comments) < 100:
-                response = request.execute()
-                
                 for item in response['items']:
                     comment = item['snippet']['topLevelComment']['snippet']['textDisplay']
                     comments.append(comment)
@@ -74,6 +74,8 @@ class YouTubeService:
                 
             return comments[:100]
         except Exception as e:
+            if "commentsDisabled" in str(e):
+                return "COMMENTS_DISABLED"
             raise Exception(f"Error fetching comments: {str(e)}")
 
     def get_transcript(self, video_id):

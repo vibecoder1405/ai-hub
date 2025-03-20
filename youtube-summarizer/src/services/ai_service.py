@@ -7,6 +7,14 @@ class AIService:
         genai.configure(api_key=GOOGLE_API_KEY)
         self.model = genai.GenerativeModel(GEMINI_MODEL)
 
+    def generate_response(self, prompt):
+        """Generate a response using Gemini for any given prompt"""
+        try:
+            response = self.model.generate_content(prompt)
+            return response.text
+        except Exception as e:
+            raise Exception(f"Error generating response: {str(e)}")
+
     def generate_summary(self, text, word_count):
         """Generate summary using Gemini"""
         prompt = f"""Please analyze the following text and create a comprehensive summary in approximately {word_count} words. Structure your response as follows:
@@ -22,7 +30,8 @@ Text to analyze:
 
 Please format your response as follows:
 
-# [Title]
+## Title
+[Title]
 
 ## Introduction
 [Your introduction here]

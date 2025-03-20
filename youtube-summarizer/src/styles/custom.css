@@ -1,5 +1,324 @@
 /* Custom CSS for Content Summarizer */
 
+/* Modern Color Scheme - YouTube Colors */
+:root {
+    --primary-color: #FF0000;      /* YouTube Red */
+    --secondary-color: #282828;    /* YouTube Dark */
+    --accent-color: #606060;       /* YouTube Gray */
+    --text-color: #030303;         /* YouTube Text */
+    --background-color: #F9F9F9;   /* YouTube Background */
+    --card-background: #FFFFFF;    /* YouTube Card */
+    --hover-color: #CC0000;        /* YouTube Red Hover */
+    --border-radius: 8px;          /* YouTube-style rounded corners */
+    --box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    --transition: all 0.2s ease;
+}
+
+/* Main Layout */
+.main-header {
+    text-align: center;
+    padding: 2rem 1rem;
+    margin-bottom: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.main-header h1 {
+    font-size: 2.5rem !important;
+    font-weight: 700 !important;
+    margin-bottom: 1rem !important;
+    letter-spacing: -0.02em;
+}
+
+.main-header .subtitle {
+    font-size: 1.1rem !important;
+    opacity: 1;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.5;
+}
+
+/* Section Headers */
+.section-header {
+    font-size: 1.5rem !important;
+    font-weight: 600 !important;
+    color: var(--text-color) !important;
+    margin-bottom: 1.25rem !important;
+    padding-bottom: 0.5rem !important;
+    border-bottom: 2px solid var(--primary-color) !important;
+}
+
+/* Sidebar Styling */
+.sidebar-header {
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.sidebar-header h2 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.url-input {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.25rem;
+}
+
+/* Streamlit sidebar container adjustments */
+.css-1d391kg {
+    padding-top: 0.5rem !important;
+}
+
+.block-container {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+}
+
+/* Input field adjustments */
+.stTextInput > div {
+    margin-top: 0 !important;
+}
+
+/* Video Cards */
+.trending-video {
+    background: var(--card-background);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: var(--box-shadow);
+    transition: var(--transition);
+    border: 1px solid #E5E5E5;
+}
+
+.trending-video:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.video-category {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+/* Tabs Styling */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 0.5rem;
+    background: var(--background-color);
+    padding: 0.75rem;
+    border-radius: var(--border-radius);
+}
+
+.stTabs [data-baseweb="tab"] {
+    background: var(--card-background) !important;
+    border-radius: var(--border-radius) !important;
+    padding: 0.6rem 1rem !important;
+    font-weight: 500 !important;
+    color: var(--accent-color) !important;
+    border: 1px solid #E5E5E5 !important;
+    transition: var(--transition) !important;
+}
+
+.stTabs [data-baseweb="tab"]:hover {
+    color: var(--primary-color) !important;
+    background: #FAFAFA !important;
+}
+
+.stTabs [data-baseweb="tab"][aria-selected="true"] {
+    background: var(--primary-color) !important;
+    color: white !important;
+    border-color: var(--primary-color) !important;
+}
+
+/* Button Styling */
+.stButton > button {
+    background: var(--primary-color) !important;
+    color: white !important;
+    border: none !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: var(--border-radius) !important;
+    font-weight: 500 !important;
+    font-size: 0.9rem !important;
+    transition: var(--transition) !important;
+    box-shadow: var(--box-shadow) !important;
+    min-width: 120px !important;
+    max-width: 200px !important;
+}
+
+.stButton > button:hover {
+    background: var(--hover-color) !important;
+    transform: translateY(-1px);
+}
+
+/* Input Fields */
+.stTextInput > div > div {
+    border-radius: var(--border-radius) !important;
+    border: 2px solid #E2E8F0 !important;
+    padding: 0.5rem !important;
+    transition: var(--transition) !important;
+}
+
+.stTextInput > div > div:focus-within {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2) !important;
+}
+
+/* Summary Container */
+.summary-container {
+    background: var(--card-background);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--box-shadow);
+    margin-top: 1.5rem;
+}
+
+/* Chat Interface */
+.stChatMessage {
+    background: var(--card-background) !important;
+    border-radius: var(--border-radius) !important;
+    padding: 1rem !important;
+    margin-bottom: 0.75rem !important;
+    box-shadow: var(--box-shadow) !important;
+    border: 1px solid #E5E5E5 !important;
+}
+
+/* Loading Animation */
+.loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #E5E5E5;
+    border-top: 3px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Video Details */
+.video-details {
+    background: var(--card-background);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: var(--box-shadow);
+}
+
+.video-details h3 {
+    color: var(--text-color);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.video-details p {
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+/* Transcript Container */
+.transcript-container {
+    background: var(--card-background);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: var(--box-shadow);
+    margin-top: 1rem;
+    position: relative;
+}
+
+.transcript-content {
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 1rem;
+    line-height: 1.6;
+}
+
+/* Copy Button */
+.copy-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.copy-button:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+/* Sentiment Analysis */
+.sentiment-analysis {
+    background: var(--card-background);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: var(--box-shadow);
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.sentiment-analysis h3 {
+    color: var(--text-color);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.sentiment-analysis p {
+    color: var(--text-color);
+    opacity: 0.8;
+}
+
+/* Translation Section */
+.translation-section {
+    background: var(--card-background);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: var(--box-shadow);
+    margin-top: 1.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-header h1 {
+        font-size: 2rem !important;
+    }
+    
+    .main-header .subtitle {
+        font-size: 1rem !important;
+    }
+    
+    .section-header {
+        font-size: 1.25rem !important;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        padding: 0.5rem 0.75rem !important;
+        font-size: 0.85rem !important;
+    }
+}
+
 /* Main container styling */
 .main {
     background-color: #f8f9fa;
@@ -43,17 +362,6 @@
     font-size: 1.5rem;
 }
 
-.trending-video {
-    position: relative;
-    background: white;
-    padding: 0.75rem;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    margin-bottom: 0.75rem;
-    transition: transform 0.2s;
-    height: 100%;
-}
-
 .trending-video img {
     width: 100%;
     height: 160px;
@@ -73,19 +381,6 @@
     font-size: 0.85rem;
     margin: 0.2rem 0;
     color: #666;
-}
-
-.video-category {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    z-index: 1;
 }
 
 /* Analysis section styling */
@@ -359,20 +654,16 @@
 
 /* Success message styling */
 .stSuccess {
-    background-color: #ecfdf5;
-    border-radius: 8px;
-    padding: 1rem;
-    color: #065f46;
-    border: 1px solid #a7f3d0;
+    background-color: #F1F8E9 !important;
+    color: #33691E !important;
+    border: 1px solid #C5E1A5 !important;
 }
 
 /* Error message styling */
 .stError {
-    background-color: #fef2f2;
-    border-radius: 8px;
-    padding: 1rem;
-    color: #991b1b;
-    border: 1px solid #fecaca;
+    background-color: #FFEBEE !important;
+    color: #C62828 !important;
+    border: 1px solid #FFCDD2 !important;
 }
 
 /* Info message styling */
@@ -544,4 +835,26 @@
 /* Remove default Streamlit padding */
 .stApp {
     margin-top: 0;
+}
+
+.section-header {
+    font-size: 1.8rem !important;
+    font-weight: 700 !important;
+    margin-bottom: 1.5rem !important;
+    color: #1a1a1a !important;
+    padding-bottom: 0.5rem !important;
+    border-bottom: 2px solid #f0f0f0 !important;
+}
+
+.video-container {
+    position: relative;
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.video-container iframe {
+    border-radius: 12px;
+    background: #000;
 } 

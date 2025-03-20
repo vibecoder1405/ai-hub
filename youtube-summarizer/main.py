@@ -73,8 +73,12 @@ with st.sidebar:
         </div>
     """, unsafe_allow_html=True)
     
-    # YouTube URL input
-    youtube_url = st.text_input("Enter YouTube URL", placeholder="https://www.youtube.com/watch?v=...")
+    # YouTube URL input with proper label
+    youtube_url = st.text_input(
+        label="YouTube URL",
+        placeholder="https://www.youtube.com/watch?v=...",
+        label_visibility="collapsed"
+    )
     
     # API Key inputs
     with st.expander("🔑 API Key Configuration", expanded=not bool(GOOGLE_API_KEY)):
@@ -209,7 +213,18 @@ if st.session_state.process_video and st.session_state.youtube_url:
             st.session_state.video_details = video_details
             col1, col2 = st.columns([1, 2])
             with col1:
-                st.image(video_details['thumbnail'], use_column_width=True)
+                # Replace thumbnail with embedded YouTube player
+                st.markdown(f"""
+                    <div class="video-container">
+                        <iframe
+                            src="https://www.youtube.com/embed/{video_id}"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen
+                            style="width: 100%; aspect-ratio: 16/9;"
+                        ></iframe>
+                    </div>
+                """, unsafe_allow_html=True)
             with col2:
                 st.markdown(f"""
                     <div class="video-details">
@@ -226,101 +241,55 @@ if st.session_state.process_video and st.session_state.youtube_url:
         tab1, tab2, tab3, tab4 = st.tabs(["📝 Generate Summary", "💬 Chat with Video", "📊 Comments Analysis", "📄 Full Transcript"])
         
         with tab1:
-            st.markdown("""
-                <div class="analysis-section">
-                    <h3>Video Summary</h3>
-                    <p>Generate a comprehensive summary of the video content.</p>
-                </div>
-            """, unsafe_allow_html=True)
+            st.markdown("<h2 class='section-header'>📝 Generate Summary</h2>", unsafe_allow_html=True)
             
             col1, col2, col3 = st.columns([2, 1, 1])
             with col1:
-                word_count = st.number_input(
-                    "Summary Length (words)", 
-                    min_value=50, 
-                    max_value=1000, 
-                    value=150,
-                    key="youtube_word_count"
-                )
+                word_count = st.slider("Summary Length (words)", min_value=100, max_value=1000, value=300, step=50)
             with col2:
-                enable_translation = st.checkbox("Enable Translation", value=False, key="youtube_translation")
+                enable_translation = st.checkbox("Enable Translation", value=False)
             with col3:
                 if enable_translation:
-                    target_language = st.selectbox(
-                        "Translate to",
-                        TRANSLATION_LANGUAGES,
-                        index=0,
-                        key="youtube_target_lang"
-                    )
-            
-            if st.button("Generate Summary", use_container_width=True):
-                st.session_state.loading = True
-                with st.spinner("Generating summary..."):
-                    transcript = st.session_state.youtube_service.get_transcript(video_id)
-                    
-                    if "Error" not in transcript:
-                        st.session_state.transcript = transcript
-                        st.session_state.detected_language = detect_language(transcript)
-                        
-                        # Update the summary prompt to include better formatting
-                        summary_prompt = f"""
-                        Create a comprehensive summary of the following video content in approximately {word_count} words.
-                        Format the summary with the following structure:
+                    target_language = st.selectbox("Translate to", TRANSLATION_LANGUAGES, index=0)
 
-                        # [Title]
-                        Create a concise, engaging title that captures the main topic.
-
-                        ## Introduction
-                        Provide a brief introduction to the main topic and context.
-
-                        ## Key Points
-                        Present the main points in a clear, organized manner.
-
-                        ## Conclusion
-                        Summarize the key takeaways and provide value to the reader.
-
-                        Video Content:
-                        {transcript}
-
-                        Please format your response using markdown syntax.
-                        """
-                        
-                        summary = st.session_state.ai_service.model.generate_content(summary_prompt).text
-                        
-                        if enable_translation:
-                            translation = st.session_state.ai_service.translate_text(summary, target_language)
-                            st.markdown(f"""
-                                <div class="translation-section">
-                                    <h3>Translation to {target_language}</h3>
-                                    <div class="translated-content">{translation}</div>
-                                    <hr>
-                                    <h3>Original ({st.session_state.detected_language})</h3>
-                                    <div class="original-content">{summary}</div>
-                                </div>
-                            """, unsafe_allow_html=True)
+            if st.button("Generate Summary", use_container_width=False):
+                with st.spinner(""):
+                    # Get transcript if not already loaded
+                    if not st.session_state.transcript:
+                        transcript = st.session_state.youtube_service.get_transcript(video_id)
+                        if "Error" not in transcript:
+                            st.session_state.transcript = transcript
                         else:
-                            st.markdown(summary)
-                    else:
-                        st.error(transcript)
-                        st.info("""
-                            <div class="error-tips">
-                                <h4>Tips if you're seeing an error:</h4>
-                                <ul>
-                                    <li>Make sure the video has closed captions available</li>
-                                    <li>Try a different video</li>
-                                    <li>Check if the video is private or age-restricted</li>
-                                </ul>
+                            st.error(transcript)
+                            st.stop()
+
+                    # Generate summary using the prompt from ai_service
+                    summary = st.session_state.ai_service.generate_summary(st.session_state.transcript, word_count)
+                    
+                    if enable_translation:
+                        translated_summary = st.session_state.ai_service.translate_text(summary, target_language)
+                        st.markdown("""
+                            <div class='translation-section'>
+                                <h3>Translation to {}</h3>
+                                <div class='translated-content'>{}</div>
+                                <hr>
+                                <h3>Original Summary</h3>
+                                <div class='original-content'>{}</div>
                             </div>
-                        """, unsafe_allow_html=True)
-                st.session_state.loading = False
+                        """.format(target_language, translated_summary, summary), unsafe_allow_html=True)
+                    else:
+                        # Use st.markdown with markdown formatting
+                        st.markdown(summary)
+                        
+                        # Add copy button with formatted text
+                        if st.button("📋 Copy Summary"):
+                            # Format the summary for clipboard
+                            formatted_summary = summary.replace('## ', '\n## ').replace('# ', '\n# ')
+                            pyperclip.copy(formatted_summary)
+                            st.success("Summary copied to clipboard!")
         
         with tab2:
-            st.markdown("""
-                <div class="analysis-section">
-                    <h3>Chat with Video</h3>
-                    <p>Ask questions about the video content and get AI-powered answers.</p>
-                </div>
-            """, unsafe_allow_html=True)
+            st.markdown("<h2 class='section-header'>💬 Chat with Video</h2>", unsafe_allow_html=True)
             
             # Initialize chat history if not exists
             if 'chat_history' not in st.session_state:
@@ -346,7 +315,7 @@ if st.session_state.process_video and st.session_state.youtube_url:
                 
                 # Generate AI response
                 with st.chat_message("assistant"):
-                    with st.spinner("Thinking..."):
+                    with st.spinner(""):
                         # Create context-aware prompt with better instructions
                         context_prompt = f"""
                         You are an AI assistant analyzing a YouTube video. Based on the following video transcript, please provide a detailed and contextual answer to the user's question.
@@ -365,17 +334,12 @@ if st.session_state.process_video and st.session_state.youtube_url:
                         Please provide a detailed answer:
                         """
                         
-                        response = st.session_state.ai_service.model.generate_content(context_prompt)
-                        st.markdown(response.text)
-                        st.session_state.chat_history.append({"role": "assistant", "content": response.text})
+                        response = st.session_state.ai_service.generate_response(context_prompt)
+                        st.markdown(response)
+                        st.session_state.chat_history.append({"role": "assistant", "content": response})
         
         with tab3:
-            st.markdown("""
-                <div class="analysis-section">
-                    <h3>Comments Analysis</h3>
-                    <p>Analyze sentiment and themes in video comments.</p>
-                </div>
-            """, unsafe_allow_html=True)
+            st.markdown("<h2 class='section-header'>📊 Comments Analysis</h2>", unsafe_allow_html=True)
             
             col1, col2 = st.columns([1, 1])
             with col1:
@@ -391,49 +355,43 @@ if st.session_state.process_video and st.session_state.youtube_url:
             
             if st.button("Analyze Comments", use_container_width=True):
                 st.session_state.loading = True
-                with st.spinner("Analyzing comments..."):
+                with st.spinner("."):
                     comments = st.session_state.youtube_service.get_video_comments(video_id)
                     if comments:
                         sentiment_analysis = st.session_state.ai_service.analyze_sentiment(comments)
                         if sentiment_analysis:
-                            st.markdown(f"""
-                                <div class="sentiment-analysis">
-                                    <h3>Comment Analysis</h3>
-                                    <p><strong>Overall Sentiment:</strong> {sentiment_analysis['category']}</p>
-                                    <p><strong>Total Comments Analyzed:</strong> {sentiment_analysis['total_comments']}</p>
+                            st.markdown("""
+                                <div class='sentiment-analysis'>
+                                    <h3>Overall Sentiment: {}</h3>
+                                    <p>Based on analysis of {} comments</p>
                                 </div>
-                            """, unsafe_allow_html=True)
+                            """.format(sentiment_analysis['category'], sentiment_analysis['total_comments']), unsafe_allow_html=True)
                                 
                             comment_analysis = st.session_state.ai_service.analyze_comments(comments)
                             if comment_analysis:
                                 if enable_translation:
                                     translated_analysis = st.session_state.ai_service.translate_text(comment_analysis, target_language)
-                                    st.markdown(f"""
-                                        <div class="translation-section">
-                                            <h3>Translation to {target_language}</h3>
-                                            <div class="translated-content">{translated_analysis}</div>
+                                    st.markdown("""
+                                        <div class='translation-section'>
+                                            <h3>Translation to {}</h3>
+                                            <div class='translated-content'>{}</div>
                                             <hr>
-                                            <h3>Original ({st.session_state.detected_language})</h3>
-                                            <div class="original-content">{comment_analysis}</div>
+                                            <h3>Original ({})</h3>
+                                            <div class='original-content'>{}</div>
                                         </div>
-                                    """, unsafe_allow_html=True)
+                                    """.format(target_language, translated_analysis, st.session_state.detected_language, comment_analysis), unsafe_allow_html=True)
                                 else:
-                                    st.markdown(f"""
-                                        <div class="comment-analysis">
-                                            {comment_analysis}
+                                    st.markdown("""
+                                        <div class='comment-analysis'>
+                                            {}
                                         </div>
-                                    """, unsafe_allow_html=True)
+                                    """.format(comment_analysis), unsafe_allow_html=True)
                     else:
                         st.warning("No comments available for analysis.")
                 st.session_state.loading = False
         
         with tab4:
-            st.markdown("""
-                <div class="analysis-section">
-                    <h3>Full Video Transcript</h3>
-                    <p>View and copy the complete video transcript.</p>
-                </div>
-            """, unsafe_allow_html=True)
+            st.markdown("<h2 class='section-header'>📝 Full Transcript</h2>", unsafe_allow_html=True)
             
             if not st.session_state.transcript:
                 transcript = st.session_state.youtube_service.get_transcript(video_id)
