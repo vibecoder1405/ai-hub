@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clone Your Own Voice</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Clone Your Own Voice</h1>
+        
+        <!-- Voice Input Section -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-4">Voice Input</h2>
+            
+            <!-- Input Method Selection -->
+            <div class="flex space-x-4 mb-6">
+                <button 
+                    id="uploadBtn"
+                    class="flex-1 py-3 px-4 rounded-lg bg-blue-500 text-white font-medium hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+                    aria-label="Upload voice sample"
+                    tabindex="0">
+                    Upload Voice Sample
+                </button>
+                <button 
+                    id="recordBtn"
+                    class="flex-1 py-3 px-4 rounded-lg bg-green-500 text-white font-medium hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors"
+                    aria-label="Record voice"
+                    tabindex="0">
+                    Record Voice
+                </button>
+            </div>
+
+            <!-- Upload Section -->
+            <div id="uploadSection" class="hidden">
+                <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                    <input 
+                        type="file" 
+                        id="voiceFile" 
+                        accept="audio/*" 
+                        class="hidden"
+                        aria-label="Upload voice file">
+                    <label 
+                        for="voiceFile" 
+                        class="cursor-pointer inline-block py-3 px-6 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
+                        Choose Audio File
+                    </label>
+                    <p class="mt-2 text-sm text-gray-500">Supported formats: MP3, WAV</p>
+                </div>
+            </div>
+
+            <!-- Recording Section -->
+            <div id="recordingSection" class="hidden">
+                <div class="flex flex-col items-center space-y-4">
+                    <div id="recordingStatus" class="text-lg font-medium text-gray-700">
+                        Ready to record
+                    </div>
+                    <button 
+                        id="startRecordBtn"
+                        class="py-3 px-6 bg-red-500 text-white rounded-full hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors"
+                        aria-label="Start recording"
+                        tabindex="0">
+                        Start Recording
+                    </button>
+                    <div id="timer" class="text-xl font-bold text-gray-800">00:00</div>
+                    <div id="audioPreview" class="w-full max-w-md"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Document Upload Section -->
+        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-4">Document Upload</h2>
+            <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                <input 
+                    type="file" 
+                    id="documentFile" 
+                    accept=".pdf,.docx" 
+                    class="hidden"
+                    aria-label="Upload document">
+                <label 
+                    for="documentFile" 
+                    class="cursor-pointer inline-block py-3 px-6 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
+                    Choose Document
+                </label>
+                <p class="mt-2 text-sm text-gray-500">Supported formats: PDF, DOCX</p>
+            </div>
+        </div>
+
+        <!-- Generate Button -->
+        <button 
+            id="generateBtn"
+            class="w-full py-4 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            aria-label="Generate speech"
+            tabindex="0"
+            disabled>
+            Generate Speech
+        </button>
+
+        <!-- Result Section -->
+        <div id="resultSection" class="mt-8 bg-white rounded-lg shadow-md p-6 hidden">
+            <h2 class="text-2xl font-semibold text-gray-700 mb-4">Generated Speech</h2>
+            <div id="audioPlayer" class="w-full"></div>
+            <button 
+                id="downloadBtn"
+                class="mt-4 w-full py-3 bg-green-500 text-white rounded-lg font-medium hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors"
+                aria-label="Download audio"
+                tabindex="0">
+                Download Audio
+            </button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html> 
