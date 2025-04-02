@@ -19,7 +19,7 @@ const Navigation: React.FC = () => {
 
       <NavigationMenuList>
         <NavigationMenuItem>
-          <Link to="/settings" className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+          <Link to="/settings" className="flex items-center gap-2 px-8 py-4 text-sm font-bold text-muted-foreground hover:text-foreground transition-colors">
             <Cog className="h-4 w-4" />
             <span>Settings</span>
           </Link>

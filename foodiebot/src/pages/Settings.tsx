@@ -5,7 +5,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { FileUploader } from '@/components/FileUploader';
+import DocumentUploader from '@/components/DocumentUploader';
+import DocumentManager from '@/components/DocumentManager';
 
 const Settings = () => {
   const [restaurantName, setRestaurantName] = useState('Taste of India');
@@ -61,7 +62,7 @@ const Settings = () => {
                       )}
                     </div>
                     <div className="flex-1">
-                      <FileUploader onFileUpload={handleLogoChange} />
+                      <Button onClick={() => handleLogoChange('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D')}>Upload Logo</Button>
                     </div>
                   </div>
                 </div>
@@ -73,64 +74,10 @@ const Settings = () => {
         </TabsContent>
         
         <TabsContent value="categories" className="mt-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Category Content</CardTitle>
-              <CardDescription>
-                Upload files for each category to train your chatbot.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Tabs defaultValue="menu">
-                <TabsList className="grid w-full grid-cols-4">
-                  <TabsTrigger value="menu">Menu</TabsTrigger>
-                  <TabsTrigger value="reviews">Reviews</TabsTrigger>
-                  <TabsTrigger value="faqs">FAQs</TabsTrigger>
-                  <TabsTrigger value="chat">Chat History</TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="menu" className="mt-4 space-y-4">
-                  <div className="p-4 border rounded-lg">
-                    <h3 className="font-medium mb-2">Menu Files</h3>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      Upload menu items, descriptions, prices, etc. Supported formats: .csv, .xlsx, .json
-                    </p>
-                    <FileUploader />
-                  </div>
-                </TabsContent>
-                
-                <TabsContent value="reviews" className="mt-4 space-y-4">
-                  <div className="p-4 border rounded-lg">
-                    <h3 className="font-medium mb-2">Reviews Files</h3>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      Upload customer reviews, ratings, etc. Supported formats: .csv, .xlsx, .json
-                    </p>
-                    <FileUploader />
-                  </div>
-                </TabsContent>
-                
-                <TabsContent value="faqs" className="mt-4 space-y-4">
-                  <div className="p-4 border rounded-lg">
-                    <h3 className="font-medium mb-2">FAQs Files</h3>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      Upload frequently asked questions and answers. Supported formats: .csv, .xlsx, .json
-                    </p>
-                    <FileUploader />
-                  </div>
-                </TabsContent>
-                
-                <TabsContent value="chat" className="mt-4 space-y-4">
-                  <div className="p-4 border rounded-lg">
-                    <h3 className="font-medium mb-2">Chat History Files</h3>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      Upload past chat conversations. Supported formats: .csv, .xlsx, .json
-                    </p>
-                    <FileUploader />
-                  </div>
-                </TabsContent>
-              </Tabs>
-            </CardContent>
-          </Card>
+          <div className="grid gap-6 md:grid-cols-2">
+            <DocumentUploader />
+            <DocumentManager />
+          </div>
         </TabsContent>
       </Tabs>
     </div>
